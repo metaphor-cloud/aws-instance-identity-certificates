@@ -1,6 +1,5 @@
-const fs = require("fs");
 const crypto = require("crypto");
-const path = require("path");
+const certs = require("./certs");
 
 const supportedProcedures = ["pkcs7", "base64", "rsa2048"];
 const procedureFormatMap = {
@@ -13,12 +12,11 @@ function getCertificateForRegion(region, procedure) {
   if (!supportedProcedures.includes(procedure)) {
     throw new Error(`Unsupported procedure: ${procedure}`);
   }
-  const certFileRelative = `certs/${procedureFormatMap[procedure]}/${region}.pem`;
-  const certFile = path.resolve(__dirname, certFileRelative);
-  if (!fs.existsSync(certFile)) {
-    throw new Error(`Certificate not found: ${certFileRelative}`);
+  const certFormat = procedureFormatMap[procedure];
+  const cert = certs[certFormat]?.[region];
+  if (!cert) {
+    throw new Error(`Certificate not found: ${certFormat} ${region}`);
   }
-  const cert = fs.readFileSync(certFile);
   return new crypto.X509Certificate(cert);
 }
 

@@ -13,7 +13,7 @@ describe("getCertificateForRegion", () => {
   });
   it("should throw an error if the certificate file does not exist", () => {
     expect(() => getCertificateForRegion("us-asdasd-1", "pkcs7")).toThrowError(
-      "Certificate not found: certs/dsa/us-asdasd-1.pem"
+      "Certificate not found: dsa us-asdasd-1"
     );
   });
   it("should return a valid X509Certificate object", () => {
