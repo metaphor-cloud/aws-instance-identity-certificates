@@ -4,7 +4,7 @@
   "description": "Public certificates for AWS Instance Identity Documents. Useful when publishing EC2 AMIs via the AWS Marketplace.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/metaphor-cloud/aws-instance-identity-certificates/issues"
   },
-  "homepage": "https://github.com/metaphor-cloud/aws-instance-identity-certificates#readme"
+  "homepage": "https://github.com/metaphor-cloud/aws-instance-identity-certificates#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
