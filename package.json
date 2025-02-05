@@ -1,6 +1,6 @@
 {
   "name": "aws-instance-identity-certificates",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Public certificates for AWS Instance Identity Documents. Useful when publishing EC2 AMIs via the AWS Marketplace.",
   "main": "index.js",
   "scripts": {

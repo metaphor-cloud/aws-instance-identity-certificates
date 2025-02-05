@@ -9,12 +9,12 @@ const procedureFormatMap = {
 };
 
 function getCertificateForRegion(region, procedure) {
-  if (procedure && !supportedProcedures.includes(procedure)) {
+  if (!supportedProcedures.includes(procedure)) {
     throw new Error(`Unsupported procedure: ${procedure}`);
   }
   const certFile = `certs/${procedureFormatMap[procedure]}/${region}.pem`;
   if (!fs.existsSync(certFile)) {
-    throw new Error(`Certificate not found for region: ${region}`);
+    throw new Error(`Certificate not found: certs/${procedureFormatMap[procedure]}/${region}.pem`);
   }
   const cert = fs.readFileSync(certFile);
   return new crypto.X509Certificate(cert);

@@ -12,8 +12,8 @@ describe("getCertificateForRegion", () => {
     ).toThrowError("Unsupported procedure: unsupported");
   });
   it("should throw an error if the certificate file does not exist", () => {
-    expect(() => getCertificateForRegion("us-east-1")).toThrowError(
-      "Certificate not found for region: us-east-1"
+    expect(() => getCertificateForRegion("us-asdasd-1", "pkcs7")).toThrowError(
+      "Certificate not found: certs/dsa/us-asdasd-1.pem"
     );
   });
   it("should return a valid X509Certificate object", () => {
