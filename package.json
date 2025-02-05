@@ -1,0 +1,31 @@
+{
+  "name": "aws-instance-identity-certificates",
+  "version": "1.0.0",
+  "description": "Public certificates for AWS Instance Identity Documents. Useful when publishing EC2 AMIs via the AWS Marketplace.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metaphor-cloud/aws-instance-identity-certificates.git"
+  },
+  "keywords": [
+    "Amazon",
+    "Web",
+    "Services",
+    "AWS",
+    "Marketplace",
+    "Instace",
+    "Identity",
+    "Certificates",
+    "Public",
+    "Keys"
+  ],
+  "author": "Rupert Bryant-Greene <rupertbg@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/metaphor-cloud/aws-instance-identity-certificates/issues"
+  },
+  "homepage": "https://github.com/metaphor-cloud/aws-instance-identity-certificates#readme"
+}
