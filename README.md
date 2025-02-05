@@ -3,6 +3,10 @@
 
 `aws-instance-identity-certificates` is an npm module that provides utilities for working with AWS instance identity documents and certificates. It helps in verifying the identity of EC2 instances and ensures secure communication between services.
 
+The verification process is taken from the AWS documentation: [Verify the instance identity document for an Amazon EC2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/verify-iid.html#verify-signature)
+
+The certificates are scraped from this [wonderfully user hostile format for supplying certificates](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/regions-certs.html)
+
 ## Installation
 
 To install the module, use npm:
