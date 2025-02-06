@@ -4,7 +4,11 @@
   "description": "Public certificates for AWS Instance Identity Documents. Useful when publishing EC2 AMIs via the AWS Marketplace.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "type": "module",
+  "jest": {
+    "transform": {}
   },
   "repository": {
     "type": "git",
