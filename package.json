@@ -34,5 +34,9 @@
   "homepage": "https://github.com/metaphor-cloud/aws-instance-identity-certificates#readme",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "asn1js": "^3.0.7",
+    "pkijs": "^3.3.3"
   }
 }
