@@ -1,6 +1,6 @@
 import { certs } from "./certs.js";
-import { X509Certificate } from "crypto";
-import pkijs from "pkijs";
+import { X509Certificate } from "node:crypto";
+import * as pkijs from "pkijs";
 import * as asn1js from "asn1js";
 
 const supportedProcedures = [
