@@ -7,10 +7,10 @@ rm -f "$OUTPUT_FILE"
 # Base directory containing certificates
 CERTS_DIR="certs"
 
-# Start building the JSON object
-echo "module.exports = {" > "$OUTPUT_FILE"
+# Start building the JS object
+echo "export const certs = {" > "$OUTPUT_FILE"
 
-# Iterate over the first-level directories (dsa, rsa, rsa2048)
+# Iterate over the first-level directories (rsa, rsa2048)
 for algo_dir in "$CERTS_DIR"/*; do
     if [[ -d "$algo_dir" ]]; then
         algo_name=$(basename "$algo_dir")
@@ -28,7 +28,7 @@ for algo_dir in "$CERTS_DIR"/*; do
                 else
                     echo "," >> "$OUTPUT_FILE"
                 fi
-                
+
                 echo "    \"$region_name\": \"$cert_contents\"" >> "$OUTPUT_FILE"
             fi
         done
@@ -37,7 +37,7 @@ for algo_dir in "$CERTS_DIR"/*; do
     fi
 done
 
-# Close the JSON object
+# Close the object
 echo "};" >> "$OUTPUT_FILE"
 
 echo "Generated $OUTPUT_FILE successfully!"

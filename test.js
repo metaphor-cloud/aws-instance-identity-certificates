@@ -65,6 +65,41 @@ q07M76Si2G8JcJW8OBYmzNsJYbeDVnhp3L6uet6zHWzlSA1U0Q3MNs8gmt9HWGzW9sDOaj5ZOkK7
 WzMXqkdbCuFkesa6EaV2nRtD+Xm2LipxGbOwlmBPumg0WGcgDuPUc62A5DewgctliURC6qzhTLnS
 AKOTPvMq3Nro7tmuvFahEjsAdcWoBQAAAAAAAA==
 `.replace(/\n/g, "");
+const validDsaDocument = `{
+  "accountId" : "189292791360",
+  "architecture" : "arm64",
+  "availabilityZone" : "ap-southeast-2a",
+  "billingProducts" : null,
+  "devpayProductCodes" : null,
+  "marketplaceProductCodes" : null,
+  "imageId" : "ami-0bd844a68ec62a014",
+  "instanceId" : "i-01c4776ebe87bea77",
+  "instanceType" : "t4g.small",
+  "kernelId" : null,
+  "pendingTime" : "2026-03-21T06:25:00Z",
+  "privateIp" : "10.0.3.106",
+  "ramdiskId" : null,
+  "region" : "ap-southeast-2",
+  "version" : "2017-09-30"
+}`;
+const validDsaSignature = `
+MIAGCSqGSIb3DQEHAqCAMIACAQExCzAJBgUrDgMCGgUAMIAGCSqGSIb3DQEHAaCAJIAEggHkewog
+ICJhY2NvdW50SWQiIDogIjE4OTI5Mjc5MTM2MCIsCiAgImFyY2hpdGVjdHVyZSIgOiAiYXJtNjQi
+LAogICJhdmFpbGFiaWxpdHlab25lIiA6ICJhcC1zb3V0aGVhc3QtMmEiLAogICJiaWxsaW5nUHJv
+ZHVjdHMiIDogbnVsbCwKICAiZGV2cGF5UHJvZHVjdENvZGVzIiA6IG51bGwsCiAgIm1hcmtldHBs
+YWNlUHJvZHVjdENvZGVzIiA6IG51bGwsCiAgImltYWdlSWQiIDogImFtaS0wYmQ4NDRhNjhlYzYy
+YTAxNCIsCiAgImluc3RhbmNlSWQiIDogImktMDFjNDc3NmViZTg3YmVhNzciLAogICJpbnN0YW5j
+ZVR5cGUiIDogInQ0Zy5zbWFsbCIsCiAgImtlcm5lbElkIiA6IG51bGwsCiAgInBlbmRpbmdUaW1l
+IiA6ICIyMDI2LTAzLTIxVDA2OjI1OjAwWiIsCiAgInByaXZhdGVJcCIgOiAiMTAuMC4zLjEwNiIs
+CiAgInJhbWRpc2tJZCIgOiBudWxsLAogICJyZWdpb24iIDogImFwLXNvdXRoZWFzdC0yIiwKICAi
+dmVyc2lvbiIgOiAiMjAxNy0wOS0zMCIKfQAAAAAAADGCAUAwggE8AgEBMGkwXDELMAkGA1UEBhMC
+VVMxGTAXBgNVBAgTEFdhc2hpbmd0b24gU3RhdGUxEDAOBgNVBAcTB1NlYXR0bGUxIDAeBgNVBAoT
+F0FtYXpvbiBXZWIgU2VydmljZXMgTExDAgkAlrpI2eVeGmcwCQYFKw4DAhoFAKCBhDAYBgkqhkiG
+9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNjAzMjEwNjI1MDFaMCMGCSqGSIb3
+DQEJBDEWBBTAf+QVSj7aVnR9alD8JoujUtCLdDAlBgkqhkiG9w0BCTQxGDAWMAkGBSsOAwIaBQCh
+CQYHKoZIzjgEAzAJBgcqhkjOOAQDBC8wLQIUI2CKKQxMbi58V6h0ScBf2Nznt+oCFQCqBH7mWS1Z
+m8naVIqxowB096q51gAAAAAAAA==
+`.replace(/\n/g, "");
 const invalidSignature = `
 GCcPKC1lRHrgflbwv5HFlD86tXmVc826COmFt48FnwjYAKwsgDhFXHyeLY4kiOmk0XrAgI2wXe3q
 D7CPu38hRxRlVFhf1IXhxh9zitL2knV+6J3XkJlheXiYK2733+SvCAlDJbfmrndf4M5Zh/nCaUHQ
@@ -75,7 +110,7 @@ describe("getCertificateForRegion", () => {
   it("should throw an error if the procedure is not supported", () => {
     expect(() =>
       getCertificateForRegion("us-east-1", "unsupported")
-    ).toThrowError("Unsupported procedure: unsupported");
+    ).toThrowError("Unsupported procedure: unsupported. Must be one of: dsa, rsa, rsa2048");
   });
 
   it("us-east-1 rsa2048 should return an X509Certificate object with valid subject and expiry", () => {
@@ -108,7 +143,7 @@ describe("verifyInstanceIdentityDocument", () => {
       verifyInstanceIdentityDocument(validInstanceIdentityDocument, null, "rsa")
     ).rejects.toThrowError("Signature is required for verification.");
   });
-  
+
   it("should throw an error if the instance identity document is missing", async () => {
     await expect(
       verifyInstanceIdentityDocument(null, validRsaSignature, "rsa")
@@ -118,7 +153,19 @@ describe("verifyInstanceIdentityDocument", () => {
   it("should throw an error if the procedure is not supported", async () => {
     await expect(
       verifyInstanceIdentityDocument(validInstanceIdentityDocument, validRsaSignature, "unsupported")
-    ).rejects.toThrowError("Unsupported procedure for key import: unsupported");
+    ).rejects.toThrowError("Unsupported procedure for key import: unsupported. Must be one of: dsa, rsa, rsa2048");
+  });
+
+  it("should throw an error for invalid JSON", async () => {
+    await expect(
+      verifyInstanceIdentityDocument("not valid json", validRsaSignature, "rsa")
+    ).rejects.toThrowError("Instance identity document is not valid JSON.");
+  });
+
+  it("should throw an error if region field is missing", async () => {
+    await expect(
+      verifyInstanceIdentityDocument('{"accountId": "123"}', validRsaSignature, "rsa")
+    ).rejects.toThrowError("Instance identity document is missing a valid 'region' field.");
   });
 
   it("should return true for a valid RSA identity document and signature", async () => {
@@ -126,6 +173,15 @@ describe("verifyInstanceIdentityDocument", () => {
       validInstanceIdentityDocument,
       validRsaSignature,
       "rsa",
+    );
+    expect(isValid).toBe(true);
+  });
+
+  it("should return true for a valid DSA identity document and signature", async () => {
+    const isValid = await verifyInstanceIdentityDocument(
+      validDsaDocument,
+      validDsaSignature,
+      "dsa",
     );
     expect(isValid).toBe(true);
   });
