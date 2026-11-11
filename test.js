@@ -135,6 +135,17 @@ O=Amazon Web Services LLC`);
     expect(cert.validTo).toBe("Apr 28 17:34:01 2029 GMT");
   });
 
+  // Regions AWS opened after the certificates were first collected. Without
+  // them, an instance in Auckland or Taipei cannot be verified at all.
+  for (const region of ["ap-southeast-6", "ap-east-2"]) {
+    for (const procedure of ["dsa", "rsa", "rsa2048"]) {
+      it(`${region} ${procedure} has an Amazon Web Services certificate`, () => {
+        const cert = getCertificateForRegion(region, procedure);
+        expect(cert).toBeInstanceOf(X509Certificate);
+        expect(cert.subject).toContain("O=Amazon Web Services LLC");
+      });
+    }
+  }
 });
 
 describe("verifyInstanceIdentityDocument", () => {
